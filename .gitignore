@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+/StrategyGame/.vs
+/StrategyGame/build
+/StrategyGame/CMakeFiles
+/StrategyGame/out/build/x64-debug
+/ConsoleApplication1
+/StrategyGame/_deps

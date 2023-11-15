@@ -1,7 +1,4 @@
-﻿// StrategyGame.cpp : Defines the entry point for the application.
-//
-
-#include "StrategyGame.h"
+﻿#include "StrategyGame.h"
 
 using namespace std;
 
