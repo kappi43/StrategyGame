@@ -1,5 +1,5 @@
-﻿#include "StrategyGame.h"
-
+﻿#include <iostream>
+#include "MessageReceiver.hpp"
 using namespace std;
 
 int main()
