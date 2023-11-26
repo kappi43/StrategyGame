@@ -24,11 +24,3 @@ TEST_F(MessageReceiverTestsFixture, canSendMessage)
 	senderSocket.recv(received);
 	ASSERT_FALSE(received.empty());
 }
-
-TEST_F(MessageReceiverTestsFixture, canSendMessage2)
-{
-	senderSocket.send(zmq::buffer("Hello"));
-	zmq::message_t received;
-	senderSocket.recv(received);
-	ASSERT_FALSE(received.empty());
-}
