@@ -1,18 +1,22 @@
 #pragma once
 #include "zmq.hpp"
+#include <string>
+#include <thread>
 
 class MessageReceiver
 {
 public:
-	MessageReceiver()
+	MessageReceiver(const std::string&, zmq::socket_type);
+	virtual ~MessageReceiver()
 	{
-	}
-
-	~MessageReceiver()
-	{
+		receiverThread.join();
 	}
 
 private:
+	void connectSocket(const std::string&);
+	void startReceiving();
+	zmq::context_t zmqContext;
 	zmq::socket_t receiverSocket;
+	std::thread receiverThread;
 };
 
