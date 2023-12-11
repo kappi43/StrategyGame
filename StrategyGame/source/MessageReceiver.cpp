@@ -27,10 +27,25 @@ void MessageReceiver::connectSocket(const std::string& address)
 
 void MessageReceiver::startReceiving()
 {
-		zmq::message_t msg;
-		LOG(INFO) << "Receiving...";
-		receiverSocket.recv(msg);
-		LOG(INFO) << "Received " << msg.data();
-		receiverSocket.send(zmq::buffer("world"));
- 
+		try
+		{
+			LOG(INFO) << "Receiving...";
+			zmq::message_t msg{};
+			receiverSocket.recv(msg);
+			LOG(INFO) << "Received " << msg.data();
+		}
+		catch (const zmq::error_t& error)
+		{
+			LOG(FATAL) << "Exception on message reception";
+			throw error;
+		}
+		try
+		{
+			receiverSocket.send(zmq::buffer("world"));
+		}
+		catch (const zmq::error_t& error)
+		{
+			LOG(FATAL) << "Exception on message send";
+			throw error;
+		}
 }
