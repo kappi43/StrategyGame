@@ -3,7 +3,6 @@
 #include "zmq.hpp"
 
 const char* validAdress = "tcp://localhost:5555";
-const char* invalidAdress = "invalid address";
 
 class MessageReceiverTestsFixture : public testing::Test
 {

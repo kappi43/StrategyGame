@@ -17,10 +17,11 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 find_package(cppzmq CONFIG REQUIRED)
-
+find_package (Boost 1.83.0 REQUIRED)
 set(SOURCES
     "sampleTest.cpp"
     "${PROJECT_SOURCE_DIR}/source/MessageReceiver.cpp"
+    "${PROJECT_SOURCE_DIR}/source/GameEngineCore.cpp"
 )
 
 add_executable (Tests ${SOURCES})
@@ -30,6 +31,7 @@ target_link_libraries(
   cppzmq
   cppzmq-static
   glog::glog
+  Boost::boost
 )
 target_include_directories(Tests
     PRIVATE 

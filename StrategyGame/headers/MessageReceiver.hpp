@@ -2,7 +2,7 @@
 #include "zmq.hpp"
 #include <string>
 #include <thread>
-
+#include "GameEngineCore.hpp"
 class MessageReceiver
 {
 public:
@@ -18,5 +18,6 @@ private:
 	zmq::context_t zmqContext;
 	zmq::socket_t receiverSocket;
 	std::thread receiverThread;
+	GameEngineCore gameEngine;
 };
 

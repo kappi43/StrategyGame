@@ -1,6 +1,9 @@
 #include "MessageReceiver.hpp"
+#ifndef GLOG_NO_ABBREVIATED_SEVERITIES
 #define GLOG_NO_ABBREVIATED_SEVERITIES
+#endif
 #include <glog/logging.h>
+#include <string>
 
 MessageReceiver::MessageReceiver(const std::string& address, zmq::socket_type socketType):
 	zmqContext{},
@@ -32,7 +35,8 @@ void MessageReceiver::startReceiving()
 			LOG(INFO) << "Receiving...";
 			zmq::message_t msg{};
 			receiverSocket.recv(msg);
-			LOG(INFO) << "Received " << msg.data();
+			LOG(INFO) << "Received " << static_cast<const char*>(msg.data());
+			gameEngine.init();
 		}
 		catch (const zmq::error_t& error)
 		{
