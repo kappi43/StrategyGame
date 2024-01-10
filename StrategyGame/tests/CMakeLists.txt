@@ -19,12 +19,13 @@ enable_testing()
 find_package(cppzmq CONFIG REQUIRED)
 find_package (Boost 1.83.0 REQUIRED)
 set(SOURCES
-    "sampleTest.cpp"
+    "MessageReceiverTests.cpp"
     "${PROJECT_SOURCE_DIR}/source/MessageReceiver.cpp"
     "${PROJECT_SOURCE_DIR}/source/GameEngineCore.cpp"
+    "${PROJECT_SOURCE_DIR}/source/MessageQueue.cpp"
 )
 
-add_executable (Tests ${SOURCES})
+add_executable (Tests ${SOURCES} "MessageQueueTests.cpp")
 target_link_libraries(
   Tests
   GTest::gtest_main

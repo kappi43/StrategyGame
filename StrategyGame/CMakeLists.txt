@@ -13,6 +13,7 @@ set(SOURCES
     "source/StrategyGame.cpp"
     "source/MessageReceiver.cpp"
     "source/GameEngineCore.cpp"
+    "source/MessageQueue.cpp"
 )
 add_executable (StrategyGame  ${SOURCES})
 

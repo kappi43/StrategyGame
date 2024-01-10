@@ -23,3 +23,10 @@ TEST_F(MessageReceiverTestsFixture, canSendMessage)
 	senderSocket.recv(received);
 	ASSERT_FALSE(received.empty());
 }
+
+TEST_F(MessageReceiverTestsFixture, willStoreMessageInQueue)
+{
+	senderSocket.send(zmq::buffer("Hello"));
+	zmq::message_t stored = sut.getNextMsg();
+	ASSERT_TRUE(stored.size() > 0);
+}

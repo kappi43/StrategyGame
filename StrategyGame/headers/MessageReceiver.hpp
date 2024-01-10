@@ -3,6 +3,7 @@
 #include <string>
 #include <thread>
 #include "GameEngineCore.hpp"
+#include <MessageQueue.hpp>
 class MessageReceiver
 {
 public:
@@ -12,7 +13,13 @@ public:
 		receiverThread.join();
 	}
 
+	static zmq::message_t getNextMsg()
+	{
+		return messageQueue.get_message();
+	}
+
 private:
+	static MessageQueue messageQueue;
 	void connectSocket(const std::string&);
 	void startReceiving();
 	zmq::context_t zmqContext;
