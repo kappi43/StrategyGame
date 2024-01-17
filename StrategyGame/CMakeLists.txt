@@ -15,7 +15,7 @@ set(SOURCES
     "source/GameEngineCore.cpp"
     "source/MessageQueue.cpp"
 )
-add_executable (StrategyGame  ${SOURCES})
+add_executable (StrategyGame  ${SOURCES} "headers/IMessageGetter.h" "headers/IMessagePusher.h")
 
 target_link_libraries(StrategyGame PRIVATE cppzmq cppzmq-static glog::glog Boost::boost)
 target_include_directories(StrategyGame

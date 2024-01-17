@@ -23,7 +23,7 @@ TEST_F(MessageQueueTestsFixture, canSimultaneuslyReadAndWrite)
 		zmq::message_t m{};
 		for (int i = 0; i <= 100000; ++i)
 		{
-			m.move(sut.get_message());
+			m.move(sut.get_msg());
 			ASSERT_TRUE(m.size() > 0);
 		}
 		} };

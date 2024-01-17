@@ -4,10 +4,11 @@
 #endif
 #include <glog/logging.h>
 #include <string>
-MessageQueue MessageReceiver::messageQueue{}; // static member definition
-MessageReceiver::MessageReceiver(const std::string& address, zmq::socket_type socketType):
+MessageReceiver::MessageReceiver(const std::string& address, zmq::socket_type socketType, std::shared_ptr<IMessagePusher> msgPusher, GameEngineCore& gameEngine):
 	zmqContext{},
-	receiverSocket{zmqContext, socketType}
+	receiverSocket{zmqContext, socketType},
+	messagePusher{ msgPusher},
+	gameEngine{ gameEngine }
 {
 	LOG(INFO) << "Creating Receiver";
 	connectSocket(address);
@@ -36,7 +37,7 @@ void MessageReceiver::startReceiving()
 			zmq::message_t msg{};
 			receiverSocket.recv(msg);
 			LOG(INFO) << "Received " << static_cast<const char*>(msg.data());
-			messageQueue.push_msg(msg);
+			messagePusher->push_msg(msg);
 			gameEngine.init();
 		}
 		catch (const zmq::error_t& error)

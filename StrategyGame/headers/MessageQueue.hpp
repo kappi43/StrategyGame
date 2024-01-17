@@ -2,12 +2,14 @@
 #include <queue>
 #include "zmq.hpp"
 #include <mutex>
-class MessageQueue
+#include "IMessagePusher.h"
+#include "IMessageGetter.h"
+class MessageQueue: public IMessagePusher, public IMessageGetter
 {
 public:
 	MessageQueue();
-	void push_msg(const zmq::message_t& msg);
-	zmq::message_t get_message();
+	virtual void push_msg(const zmq::message_t& msg) override;
+	virtual zmq::message_t get_msg() override;
 private:
 	std::queue<zmq::message_t> internalQueue;
 	std::mutex messageQueueMutex;
