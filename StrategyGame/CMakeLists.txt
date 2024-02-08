@@ -1,6 +1,6 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.10)
 project ("StrategyGame")
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package (cppzmq CONFIG REQUIRED)
@@ -15,7 +15,7 @@ set(SOURCES
     "source/GameEngineCore.cpp"
     "source/MessageQueue.cpp"
 )
-add_executable (StrategyGame  ${SOURCES} "headers/IMessageGetter.h" "headers/IMessagePusher.h")
+add_executable (StrategyGame  ${SOURCES})
 
 target_link_libraries(StrategyGame PRIVATE cppzmq cppzmq-static glog::glog Boost::boost)
 target_include_directories(StrategyGame

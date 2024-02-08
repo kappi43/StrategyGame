@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-# GoogleTest requires at least C++14
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
@@ -16,8 +15,6 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-find_package(cppzmq CONFIG REQUIRED)
-find_package (Boost 1.83.0 REQUIRED)
 set(SOURCES
     "MessageReceiverTests.cpp"
     "${PROJECT_SOURCE_DIR}/source/MessageReceiver.cpp"

@@ -21,10 +21,15 @@ TEST_F(MessageQueueTestsFixture, canSimultaneuslyReadAndWrite)
 		} };
 	std::thread reader{ [&]() {
 		zmq::message_t m{};
-		for (int i = 0; i <= 100000; ++i)
+		for (int i = 0; i <= 100000;)
 		{
-			m.move(sut.get_msg());
-			ASSERT_TRUE(m.size() > 0);
+			auto msg = sut.get_msg();
+			if (msg.has_value())
+			{
+				++i;
+				m.move(msg.value());
+				ASSERT_TRUE(m.size() > 0);
+			}
 		}
 		} };
 	writer.join();
