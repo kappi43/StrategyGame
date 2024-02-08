@@ -14,6 +14,7 @@ set(SOURCES
     "source/MessageReceiver.cpp"
     "source/GameEngineCore.cpp"
     "source/MessageQueue.cpp"
+    "protobuf_generated/InitBoardReq.pb.cc"
 )
 add_executable (StrategyGame  ${SOURCES})
 
@@ -21,5 +22,6 @@ target_link_libraries(StrategyGame PRIVATE cppzmq cppzmq-static glog::glog Boost
 target_include_directories(StrategyGame
     PRIVATE 
         ${PROJECT_SOURCE_DIR}/headers
+        ${PROJECT_SOURCE_DIR}/protobuf_generated
 )
 
