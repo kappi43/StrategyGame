@@ -7,7 +7,6 @@
 #include <MessageQueue.hpp>
 #include <GameEngineCore.hpp>
 #include <memory>
-
 void initLogger()
 {
 	google::InitGoogleLogging("StrategyGame");
@@ -17,10 +16,10 @@ void initLogger()
 int main(int argc, char* argv[])
 {
 	initLogger();
+
 	std::shared_ptr<MessageQueue> msgQueue = std::make_shared<MessageQueue>();
 	GameEngineCore gameEngine{ msgQueue };
 
 	MessageReceiver receiver("tcp://localhost:5555", zmq::socket_type::rep, msgQueue, gameEngine);
 	return 0;
 }
-

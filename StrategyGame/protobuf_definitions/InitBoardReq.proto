@@ -1,7 +1,7 @@
 syntax = "proto3";
-package gameEngine;
+package GameEngine;
 
 message InitBoardReq
 {
-	repeated int32 board = 1;
+	repeated int32 field = 1;
 }

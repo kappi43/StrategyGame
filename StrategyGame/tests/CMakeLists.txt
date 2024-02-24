@@ -17,12 +17,12 @@ enable_testing()
 
 set(SOURCES
     "MessageReceiverTests.cpp"
-    "${PROJECT_SOURCE_DIR}/source/MessageReceiver.cpp"
-    "${PROJECT_SOURCE_DIR}/source/GameEngineCore.cpp"
-    "${PROJECT_SOURCE_DIR}/source/MessageQueue.cpp"
+    "${PROJECT_SOURCE_DIR}/src/source/MessageReceiver.cpp"
+    "${PROJECT_SOURCE_DIR}/src/source/GameEngineCore.cpp"
+    "${PROJECT_SOURCE_DIR}/src/source/MessageQueue.cpp"
 )
 
-add_executable (Tests ${SOURCES} "MessageQueueTests.cpp")
+add_executable (Tests ${SOURCES}  "GameEngineTests.cpp" ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(
   Tests
   GTest::gtest_main
@@ -30,10 +30,13 @@ target_link_libraries(
   cppzmq-static
   glog::glog
   Boost::boost
+  protobuf::libprotobuf
 )
 target_include_directories(Tests
     PRIVATE 
-        ${PROJECT_SOURCE_DIR}/headers
+        ${PROJECT_SOURCE_DIR}/src/headers
+        ${protobuf_INCLUDE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 include(GoogleTest)

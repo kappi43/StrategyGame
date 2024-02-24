@@ -8,7 +8,7 @@
 class MessageReceiver
 {
 public:
-	MessageReceiver(const std::string&, zmq::socket_type, std::shared_ptr<IMessagePusher>, GameEngineCore&);
+	MessageReceiver(const std::string&, zmq::socket_type, std::shared_ptr<IMessagePusher>);
 	virtual ~MessageReceiver()
 	{
 		receiverThread.join();
@@ -21,6 +21,5 @@ private:
 	zmq::context_t zmqContext;
 	zmq::socket_t receiverSocket;
 	std::thread receiverThread;
-	GameEngineCore& gameEngine;
 };
 
