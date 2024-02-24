@@ -18,8 +18,8 @@ int main(int argc, char* argv[])
 	initLogger();
 
 	std::shared_ptr<MessageQueue> msgQueue = std::make_shared<MessageQueue>();
-	GameEngineCore gameEngine{ msgQueue };
+	GameEngineCore gameEngine{ msgQueue, zmq::socket_type::pub };
 
-	MessageReceiver receiver("tcp://localhost:5555", zmq::socket_type::rep, msgQueue, gameEngine);
+	MessageReceiver receiver("tcp://localhost:5555", zmq::socket_type::rep, msgQueue);
 	return 0;
 }
