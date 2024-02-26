@@ -26,6 +26,7 @@ add_executable (Tests ${SOURCES}  "GameEngineTests.cpp" ${PROTO_SRCS} ${PROTO_HD
 target_link_libraries(
   Tests
   GTest::gtest_main
+  GTest::gmock_main
   cppzmq
   cppzmq-static
   glog::glog
@@ -35,6 +36,7 @@ target_link_libraries(
 target_include_directories(Tests
     PRIVATE 
         ${PROJECT_SOURCE_DIR}/src/headers
+        ${PROJECT_SOURCE_DIR}/tests
         ${protobuf_INCLUDE_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
 )

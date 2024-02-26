@@ -3,36 +3,28 @@
 #include "MessageQueue.hpp"
 #include "zmq.hpp"
 #include <memory>
-#include "InitBoardReq.pb.h"
+#include "MessageQueueMock.hpp"
+
 
 static const char* validAdress = "tcp://localhost:5555";
+using ::testing::NaggyMock;
+using ::testing::_;
 
 class MessageReceiverTestsFixture : public testing::Test
 {
 protected:
-	MessageReceiverTestsFixture() : zmqContext{}, senderSocket{ zmqContext ,zmq::socket_type::req }, sut{ validAdress, zmq::socket_type::rep, msgQ}
+	MessageReceiverTestsFixture() : zmqContext{}, senderSocket{ zmqContext ,zmq::socket_type::req }, sut{ validAdress, zmq::socket_type::rep, mockPtr }
 	{
 		senderSocket.connect(validAdress);
 	}
 	zmq::context_t zmqContext;
 	zmq::socket_t senderSocket;
-	std::shared_ptr<MessageQueue> msgQ = std::make_shared<MessageQueue>();
-	GameEngineCore gameEngine{ msgQ, zmq::socket_type::rep };
+	std::shared_ptr<NaggyMock<MessageQueueMock>> mockPtr = std::make_shared<NaggyMock<MessageQueueMock>>();
 	MessageReceiver sut;
 };
 
-//TEST_F(MessageReceiverTestsFixture, canSendSimpleMessage)
-//{
-//	senderSocket.send(zmq::buffer("Hello"));
-//	ASSERT_FALSE(received.empty());
-//}
-//
-//TEST_F(MessageReceiverTestsFixture, canSendProtoEncodedMessage)
-//{
-//	GameEngine::InitBoardReq initReq;
-//	//========
-//	initReq.add_field(1);
-//	initReq.add_field(2);
-//	initReq.add_field(3);
-//	senderSocket.send(zmq::buffer(initReq.SerializeAsString()));
-//}
+TEST_F(MessageReceiverTestsFixture, willSaveMessageInQueueAfterReception)
+{
+	senderSocket.send(zmq::buffer("Hello"));
+	EXPECT_CALL(*mockPtr, push_msg(_) ).Times(1);
+}
