@@ -12,7 +12,6 @@ FetchContent_Declare(
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
-
 enable_testing()
 
 set(SOURCES
@@ -20,9 +19,10 @@ set(SOURCES
     "${PROJECT_SOURCE_DIR}/src/source/MessageReceiver.cpp"
     "${PROJECT_SOURCE_DIR}/src/source/GameEngineCore.cpp"
     "${PROJECT_SOURCE_DIR}/src/source/MessageQueue.cpp"
+    "${PROJECT_SOURCE_DIR}/src/source/Init.cpp"
+    "${PROJECT_SOURCE_DIR}/src/source/InitializeBoard.cpp"
 )
-
-add_executable (Tests ${SOURCES}  "GameEngineTests.cpp" ${PROTO_SRCS} ${PROTO_HDRS})
+add_executable (Tests ${SOURCES}  "GameEngineTests.cpp")
 target_link_libraries(
   Tests
   GTest::gtest_main
@@ -32,13 +32,12 @@ target_link_libraries(
   glog::glog
   Boost::boost
   protobuf::libprotobuf
+  messages
 )
 target_include_directories(Tests
     PRIVATE 
         ${PROJECT_SOURCE_DIR}/src/headers
         ${PROJECT_SOURCE_DIR}/tests
-        ${protobuf_INCLUDE_DIR}
-        ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 include(GoogleTest)

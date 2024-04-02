@@ -1,0 +1,14 @@
+syntax = "proto3";
+package GameEngine;
+
+import "InitBoardReq.proto";
+import "CloseEngineCommand.proto";
+
+message ReqWrapper
+{
+	oneof msg
+	{
+		InitBoardReq initBoardReq = 1;
+		CloseEngineCommand closeEngineCommand = 2;
+	}
+}

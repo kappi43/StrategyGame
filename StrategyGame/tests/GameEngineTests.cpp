@@ -4,6 +4,7 @@
 #include "zmq.hpp"
 #include <memory>
 #include "InitBoardReq.pb.h"
+#include "ReqWrapper.pb.h"
 
 static const char* validAdress = "tcp://localhost:5555";
 
@@ -14,15 +15,10 @@ protected:
 	{
 		senderSocket.connect(validAdress);
 		senderSocket.set(zmq::sockopt::subscribe, "");
+		synchronize();
 	}
-	zmq::context_t zmqContext;
-	zmq::socket_t senderSocket;
-	std::shared_ptr<MessageQueue> msgQ = std::make_shared<MessageQueue>();
-	GameEngineCore sut{ msgQ, zmq::socket_type::pub };
-};
 
-TEST_F(GameEngingeTestsFixture, canSendProtoEncodedMessage)
-{
+	const void synchronize()
 	{
 		zmq::socket_t synchronizingSocket{ zmqContext, zmq::socket_type::req };
 		synchronizingSocket.connect("tcp://localhost:5556");
@@ -38,16 +34,22 @@ TEST_F(GameEngingeTestsFixture, canSendProtoEncodedMessage)
 				break;
 			}
 		}
-		
 	}
 
+	zmq::context_t zmqContext;
+	zmq::socket_t senderSocket;
+	std::shared_ptr<MessageQueue> msgQ = std::make_shared<MessageQueue>();
+	GameEngineCore sut{ msgQ, zmq::socket_type::pub };
+};
+
+TEST_F(GameEngingeTestsFixture, EngineRepliesWithSizeOfProtoMessageArray)
+{
 	zmq::pollitem_t pollitems[] =
 	{
 		{ senderSocket, 0, ZMQ_POLLIN, 0 }
 	};
 
 	GameEngine::InitBoardReq initReq;
-	//========
 	initReq.add_field(1);
 	initReq.add_field(2);
 	initReq.add_field(3);
@@ -64,4 +66,23 @@ TEST_F(GameEngingeTestsFixture, canSendProtoEncodedMessage)
 		}
 	}
 	ASSERT_EQ(received.to_string(), "3");
+	GameEngine::ReqWrapper closeEngineCommand;
+	closeEngineCommand.mutable_closeenginecommand();
+	zmq::message_t msg2(closeEngineCommand.SerializeAsString());
+	msgQ->push_msg(msg2);
 }
+
+TEST_F(GameEngingeTestsFixture, EngineShutsDownOnCloseEngineCommand)
+{
+	zmq::pollitem_t pollitems[] =
+	{
+		{ senderSocket, 0, ZMQ_POLLIN, 0 }
+	};
+
+	GameEngine::ReqWrapper closeEngineCommand;
+	closeEngineCommand.mutable_closeenginecommand();
+	zmq::message_t msg(closeEngineCommand.SerializeAsString());
+	msgQ->push_msg(msg);
+}
+
+

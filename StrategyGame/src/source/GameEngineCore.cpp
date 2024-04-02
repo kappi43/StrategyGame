@@ -1,64 +1,43 @@
+
 #include "GameEngineCore.hpp"
 #include "boost/statechart/state.hpp"
+#include <boost/statechart/event.hpp>
+#include <boost/statechart/custom_reaction.hpp>
 #include "glog/logging.h"
-#include "InitBoardReq.pb.h"
-GameEngineCore::GameEngineCore(std::shared_ptr<IMessageGetter> msgGetter, zmq::socket_type socketType) : messageGetter{msgGetter}, context{}, socket{context, socketType}
+#include "InitializeBoard.hpp"
+#include "ReqWrapper.pb.h"
+#include "Init.hpp"
+#include <EventCloseEngine.hpp>
+#include "EventMessageArrival.hpp"
+
+GameEngineCore::GameEngineCore(std::shared_ptr<IMessageGetter> msgGetter, zmq::socket_type socketType) : messageGetter{msgGetter}, context{}, socket{context, socketType}, keep_running{true}
 {
 	socket.bind("tcp://*:5555");
-	
 	stateMachineThread = std::thread{ &GameEngineCore::init, this };
 }
 
 void GameEngineCore::init()
 {
 	this->initiate();
+	while (keep_running)
+	{
+		std::optional<zmq::message_t> msg = this->getMessage();
+		if (msg.has_value())
+		{
+			LOG(INFO) << "Processing message";
+			GameEngine::ReqWrapper arrivingCommand{};
+			arrivingCommand.ParseFromString(static_cast<const char*>(msg->data()));
+			if (arrivingCommand.has_closeenginecommand())
+			{
+				LOG(INFO) << "Got close engine";
+				this->process_event(EventCloseEngine());
+			} 
+			else if(arrivingCommand.has_initboardreq())
+			{
+				LOG(INFO) << "Got init board";
+				this->process_event(EventMessageArrival(msg.value()));
+			}
+		}
+	}
+	LOG(INFO) << "Exiting";
 }
-class Init : public boost::statechart::state<Init, GameEngineCore>
-{
-	std::optional<zmq::message_t> getMessageBlocking()
-	{
-		std::optional<zmq::message_t> msgOpt = outermost_context().getMessage();
-		while (!msgOpt.has_value())
-		{
-			msgOpt = outermost_context().getMessage();
-		}
-		return msgOpt;
-	}
-
-	zmq::send_result_t sendFromEngine(zmq::message_t& msg)
-	{
-		return outermost_context().sendBack(msg);
-	}
-
-	void Synchronize()
-	{
-		zmq::context_t zmqContext;
-		zmq::socket_t synchronizingSocket{ zmqContext, zmq::socket_type::rep };
-		synchronizingSocket.bind("tcp://*:5556");
-		LOG(INFO) << "Synchronizing to client";
-		zmq::message_t msg;
-		sendFromEngine(zmq::message_t{ "SYN" });
-		synchronizingSocket.recv(msg);
-		if (!msg.empty())
-		{
-			synchronizingSocket.send(zmq::buffer(""));
-		}
-	}
-
-public:
-	Init(my_context context) : my_base{context}
-	{
-		Synchronize();
-		LOG(INFO) << "Entering Init state";
-		auto& incomingMessage = getMessageBlocking();
-		LOG(INFO) << "Got message";
-		GameEngine::InitBoardReq deserialized{};
-		deserialized.ParseFromString(static_cast<char*>(incomingMessage.value().data()));
-		LOG(INFO) << "Sending resp";
-		sendFromEngine(zmq::message_t{ std::to_string(deserialized.field_size()) });
-	}
-	~Init()
-	{
-		LOG(INFO) << "Exiting Init state";
-	}
-};
