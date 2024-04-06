@@ -2,8 +2,8 @@
 #include "zmq.hpp"
 #include <string>
 #include <thread>
-#include "GameEngineCore.hpp"
-#include "IMessagePusher.h"
+#include "gameEngine/GameEngineCore.hpp"
+#include "messageQueue/IMessagePusher.h"
 #include <memory>
 class MessageReceiver
 {

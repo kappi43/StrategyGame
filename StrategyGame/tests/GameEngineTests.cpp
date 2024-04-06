@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "GameEngineCore.hpp"
-#include "MessageQueue.hpp"
+#include "gameEngine/GameEngineCore.hpp"
+#include "messageQueue/MessageQueue.hpp"
 #include "zmq.hpp"
 #include <memory>
 #include "InitBoardReq.pb.h"
@@ -74,15 +74,8 @@ TEST_F(GameEngingeTestsFixture, EngineRepliesWithSizeOfProtoMessageArray)
 
 TEST_F(GameEngingeTestsFixture, EngineShutsDownOnCloseEngineCommand)
 {
-	zmq::pollitem_t pollitems[] =
-	{
-		{ senderSocket, 0, ZMQ_POLLIN, 0 }
-	};
-
 	GameEngine::ReqWrapper closeEngineCommand;
 	closeEngineCommand.mutable_closeenginecommand();
 	zmq::message_t msg(closeEngineCommand.SerializeAsString());
 	msgQ->push_msg(msg);
 }
-
-

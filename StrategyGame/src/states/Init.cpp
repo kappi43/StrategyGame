@@ -1,7 +1,7 @@
-#include "Init.hpp"
+#include "states/Init.hpp"
+#include "events/EventMessageArrival.hpp"
+#include "states/InitializeBoard.hpp"
 #include "InitBoardReq.pb.h"
-#include "EventMessageArrival.hpp"
-#include "InitializeBoard.hpp"
 #include "CloseEngineCommand.pb.h"
 #include "ReqWrapper.pb.h"
 Init::Init(my_context context) : my_base{ context }

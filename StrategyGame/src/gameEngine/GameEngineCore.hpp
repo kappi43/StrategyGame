@@ -1,11 +1,12 @@
 #pragma once
 #include "boost/statechart/state_machine.hpp"
 #include <memory>
-#include "IMessageGetter.h"
+#include "messageQueue/IMessageGetter.h"
 #include <zmq.hpp>
 #include <thread>
 #include <atomic>
 #include <glog/logging.h>
+#include <vector>
 class Init;
 class GameEngineCore : public boost::statechart::state_machine<GameEngineCore, Init>
 {
@@ -33,6 +34,8 @@ private:
 	zmq::context_t context;
 	zmq::socket_t socket;
 	std::atomic_bool keep_running;
+
+	std::vector<int> board;
 	
 	std::shared_ptr<IMessageGetter> messageGetter;
 	std::thread stateMachineThread;

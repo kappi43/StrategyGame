@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "MessageReceiver.hpp"
-#include "MessageQueue.hpp"
+#include "messageReceiver/MessageReceiver.hpp"
+#include "messageQueue/MessageQueue.hpp"
 #include "zmq.hpp"
 #include <memory>
 #include "MessageQueueMock.hpp"

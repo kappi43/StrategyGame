@@ -16,11 +16,11 @@ enable_testing()
 
 set(SOURCES
     "MessageReceiverTests.cpp"
-    "${PROJECT_SOURCE_DIR}/src/source/MessageReceiver.cpp"
-    "${PROJECT_SOURCE_DIR}/src/source/GameEngineCore.cpp"
-    "${PROJECT_SOURCE_DIR}/src/source/MessageQueue.cpp"
-    "${PROJECT_SOURCE_DIR}/src/source/Init.cpp"
-    "${PROJECT_SOURCE_DIR}/src/source/InitializeBoard.cpp"
+    "../src/messageReceiver/MessageReceiver.cpp"
+    "../src/gameEngine/GameEngineCore.cpp"
+    "../src/messageQueue/MessageQueue.cpp"
+    "../src/states/Init.cpp"
+    "../src/states/InitializeBoard.cpp"
 )
 add_executable (Tests ${SOURCES}  "GameEngineTests.cpp")
 target_link_libraries(
@@ -36,7 +36,7 @@ target_link_libraries(
 )
 target_include_directories(Tests
     PRIVATE 
-        ${PROJECT_SOURCE_DIR}/src/headers
+        ${PROJECT_SOURCE_DIR}/src
         ${PROJECT_SOURCE_DIR}/tests
 )
 

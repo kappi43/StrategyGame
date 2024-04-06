@@ -1,7 +1,6 @@
 #include "MessageQueue.hpp"
 #include <iostream>
 
-
 MessageQueue::MessageQueue() : messageQueueMutex{}
 {
 }

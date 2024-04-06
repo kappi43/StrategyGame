@@ -13,19 +13,19 @@ include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(SOURCES
-    "src/source/StrategyGame.cpp"
-    "src/source/MessageReceiver.cpp"
-    "src/source/GameEngineCore.cpp"
-    "src/source/MessageQueue.cpp"
-    "src/source/InitializeBoard.cpp"
-    "src/source/Init.cpp"
+    "src/main.cpp"
+    "src/messageReceiver/MessageReceiver.cpp"
+    "src/gameEngine/GameEngineCore.cpp"
+    "src/messageQueue/MessageQueue.cpp"
+    "src/states/InitializeBoard.cpp"
+    "src/states/Init.cpp"
 )
 add_executable (StrategyGame  ${SOURCES} )
 
 target_link_libraries(StrategyGame PRIVATE cppzmq cppzmq-static glog::glog Boost::boost PUBLIC protobuf::libprotobuf messages)
 target_include_directories(StrategyGame
     PRIVATE 
-        ${PROJECT_SOURCE_DIR}/src/headers
+        ${PROJECT_SOURCE_DIR}/src
         "$<BUILD_INTERFACE:${PROTO_BINARY_DIR}>"
         ${ProtobufIncludePath}
 )

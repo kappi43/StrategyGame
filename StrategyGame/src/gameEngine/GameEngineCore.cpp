@@ -4,11 +4,11 @@
 #include <boost/statechart/event.hpp>
 #include <boost/statechart/custom_reaction.hpp>
 #include "glog/logging.h"
-#include "InitializeBoard.hpp"
+#include "states/InitializeBoard.hpp"
 #include "ReqWrapper.pb.h"
-#include "Init.hpp"
-#include <EventCloseEngine.hpp>
-#include "EventMessageArrival.hpp"
+#include "states/Init.hpp"
+#include <events/EventCloseEngine.hpp>
+#include "events/EventMessageArrival.hpp"
 
 GameEngineCore::GameEngineCore(std::shared_ptr<IMessageGetter> msgGetter, zmq::socket_type socketType) : messageGetter{msgGetter}, context{}, socket{context, socketType}, keep_running{true}
 {

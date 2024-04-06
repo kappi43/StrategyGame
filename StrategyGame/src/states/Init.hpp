@@ -4,9 +4,9 @@
 #include <boost/statechart/custom_reaction.hpp>
 #include <zmq.hpp>
 #include "glog/logging.h"
-#include "GameEngineCore.hpp"
+#include "gameEngine/GameEngineCore.hpp"
 #include <boost/mpl/list.hpp>
-#include "EventCloseEngine.hpp"
+#include "events/EventCloseEngine.hpp"
 
 struct EventMessageArrival;
 struct EventCloseEngine;
