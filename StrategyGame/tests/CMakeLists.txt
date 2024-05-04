@@ -38,6 +38,7 @@ target_include_directories(Tests
     PRIVATE 
         ${PROJECT_SOURCE_DIR}/src
         ${PROJECT_SOURCE_DIR}/tests
+        ${ProtobufIncludePath}
 )
 
 include(GoogleTest)

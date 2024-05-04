@@ -10,6 +10,7 @@
 
 struct EventMessageArrival;
 struct EventCloseEngine;
+struct EventStartEngine;
 class Init : public boost::statechart::state<Init, GameEngineCore>
 {
 	zmq::send_result_t sendFromEngine(zmq::message_t& msg)
@@ -24,11 +25,13 @@ public:
 
 	typedef boost::mpl::list<
 		boost::statechart::custom_reaction< EventMessageArrival>,
-		boost::statechart::custom_reaction< EventCloseEngine >
+		boost::statechart::custom_reaction< EventCloseEngine >,
+		boost::statechart::custom_reaction< EventStartEngine >
 	> reactions;
 
 	boost::statechart::result react(const EventMessageArrival&);
 	boost::statechart::result react(const EventCloseEngine&);
+	boost::statechart::result react(const EventStartEngine&);
 
 	~Init()
 	{

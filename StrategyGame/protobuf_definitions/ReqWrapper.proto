@@ -3,6 +3,7 @@ package GameEngine;
 
 import "InitBoardReq.proto";
 import "CloseEngineCommand.proto";
+import "StartEngine.proto";
 
 message ReqWrapper
 {
@@ -10,5 +11,6 @@ message ReqWrapper
 	{
 		InitBoardReq initBoardReq = 1;
 		CloseEngineCommand closeEngineCommand = 2;
+		StartEngine startEngine = 3;
 	}
 }

@@ -7,6 +7,7 @@
 #include <atomic>
 #include <glog/logging.h>
 #include <vector>
+#include "CloseEngineCommandAck.pb.h"
 class Init;
 class GameEngineCore : public boost::statechart::state_machine<GameEngineCore, Init>
 {
@@ -28,14 +29,18 @@ public:
 	void shutdown()
 	{
 		keep_running.store(false);
+		GameEngine::CloseEngineCommandAck ack;
+		sendBack(zmq::message_t{ ack.SerializeAsString() });
+	}
+	bool isRunning()
+	{
+		return keep_running;
 	}
 private:
 	void init();
 	zmq::context_t context;
 	zmq::socket_t socket;
 	std::atomic_bool keep_running;
-
-	std::vector<int> board;
 	
 	std::shared_ptr<IMessageGetter> messageGetter;
 	std::thread stateMachineThread;

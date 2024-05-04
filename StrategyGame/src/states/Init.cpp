@@ -1,5 +1,6 @@
 #include "states/Init.hpp"
 #include "events/EventMessageArrival.hpp"
+#include "events/EventStartEngine.hpp"
 #include "states/InitializeBoard.hpp"
 #include "InitBoardReq.pb.h"
 #include "CloseEngineCommand.pb.h"
@@ -30,10 +31,12 @@ boost::statechart::result Init::react(const EventMessageArrival& arrivingMessage
 {
 	auto& incomingMessage = arrivingMessageEvent.msg;
 	LOG(INFO) << "Got message";
-	GameEngine::InitBoardReq deserialized{};
+	GameEngine::ReqWrapper deserialized{};
 	deserialized.ParseFromString(static_cast<const char*>(incomingMessage.data()));
-	LOG(INFO) << "Sending resp";
-	sendFromEngine(zmq::message_t{ std::to_string(deserialized.field_size()) });
+	if (deserialized.has_startengine())
+	{
+		LOG(INFO) << "Configuring engine";
+	}
 	return transit<InitializeBoard>();
 }
 
@@ -42,4 +45,9 @@ boost::statechart::result Init::react(const EventCloseEngine& arrivingMessageEve
 	LOG(INFO) << "Got EventCloseEngine";
 	outermost_context().shutdown();
 	return terminate();
+}
+boost::statechart::result Init::react(const EventStartEngine& arrivingMessageEvent)
+{
+	LOG(INFO) << "Got EventStartEngine";
+	return transit<InitializeBoard>();
 }

@@ -6,16 +6,16 @@
 #include "MessageQueueMock.hpp"
 
 
-static const char* validAdress = "tcp://localhost:5555";
+static const char* validAddress = "tcp://localhost:5555";
 using ::testing::NaggyMock;
 using ::testing::_;
 
 class MessageReceiverTestsFixture : public testing::Test
 {
 protected:
-	MessageReceiverTestsFixture() : zmqContext{}, senderSocket{ zmqContext ,zmq::socket_type::req }, sut{ validAdress, zmq::socket_type::rep, mockPtr }
+	MessageReceiverTestsFixture() : zmqContext{}, senderSocket{ zmqContext ,zmq::socket_type::req }, sut{ validAddress, zmq::socket_type::rep, mockPtr }
 	{
-		senderSocket.connect(validAdress);
+		senderSocket.connect(validAddress);
 	}
 	zmq::context_t zmqContext;
 	zmq::socket_t senderSocket;
