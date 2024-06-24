@@ -21,8 +21,10 @@ set(SOURCES
     "../src/messageQueue/MessageQueue.cpp"
     "../src/states/Init.cpp"
     "../src/states/InitializeBoard.cpp"
+    "../src/gameEngine/GameContext.cpp"
+    "../src/gameEngine/GameBoardField.cpp"
 )
-add_executable (Tests ${SOURCES}  "GameEngineTests.cpp")
+add_executable (Tests ${SOURCES}  "GameEngineTests.cpp" "GameBoardFieldTests.cpp")
 target_link_libraries(
   Tests
   GTest::gtest_main

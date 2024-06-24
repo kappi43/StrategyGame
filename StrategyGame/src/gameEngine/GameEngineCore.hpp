@@ -7,6 +7,7 @@
 #include <atomic>
 #include <glog/logging.h>
 #include <vector>
+#include "GameContext.hpp"
 #include "CloseEngineCommandAck.pb.h"
 class Init;
 class GameEngineCore : public boost::statechart::state_machine<GameEngineCore, Init>
@@ -36,6 +37,7 @@ public:
 	{
 		return keep_running;
 	}
+	GameContext gameContext;
 private:
 	void init();
 	zmq::context_t context;

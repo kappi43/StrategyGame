@@ -20,7 +20,7 @@ set(SOURCES
     "src/states/InitializeBoard.cpp"
     "src/states/Init.cpp"
 )
-add_executable (StrategyGame  ${SOURCES} )
+add_executable (StrategyGame  ${SOURCES}  "src/gameEngine/GamePiece.h" "src/gameEngine/GameBoardField.h" "src/gameEngine/GameBoardField.cpp" )
 
 target_link_libraries(StrategyGame PRIVATE cppzmq cppzmq-static glog::glog Boost::boost PUBLIC protobuf::libprotobuf messages)
 target_include_directories(StrategyGame

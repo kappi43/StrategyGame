@@ -95,10 +95,8 @@ TEST_F(GameEngineTestsFixture, EngineInitializesBoard)
 {
 	startEngine();
 	initializeGameEngineBoard();
-	zmq::message_t received = receiveMessageFromEngine();
-	GameEngine::InitBoardResp resp;
-	resp.ParseFromString(received.to_string());
-	ASSERT_EQ(resp.size(), 3);
+	auto _ = receiveMessageFromEngine(); 
+	ASSERT_EQ(sut.gameContext.getBoardSize(), 3);
 }
 
 TEST_F(GameEngineTestsFixture, EngineShutsDownOnCloseEngineCommand)

@@ -7,7 +7,7 @@
 #include <boost/mpl/list.hpp>
 namespace GameEngine
 {
-	class InitBoardReq;
+	class ReqWrapper;
 }
 namespace Rng
 {
@@ -15,9 +15,7 @@ namespace Rng
 }
 class InitializeBoard : public boost::statechart::state<InitializeBoard, GameEngineCore>
 {
-	std::vector<int> board;
-	void setup_board(const GameEngine::InitBoardReq&);
-	void seed_board(const Rng::RngDevice&);
+	void setup_board(const GameEngine::ReqWrapper&);
 public:
 	InitializeBoard(my_context context);
 	typedef boost::mpl::list<

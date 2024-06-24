@@ -11,7 +11,7 @@
 #include "events/EventMessageArrival.hpp"
 #include "events/EventStartEngine.hpp"
 
-GameEngineCore::GameEngineCore(std::shared_ptr<IMessageGetter> msgGetter, zmq::socket_type socketType) : messageGetter{msgGetter}, context{}, socket{context, socketType}, keep_running{true}
+GameEngineCore::GameEngineCore(std::shared_ptr<IMessageGetter> msgGetter, zmq::socket_type socketType) : messageGetter{ msgGetter }, context{}, socket{ context, socketType }, keep_running{ true }, gameContext{}
 {
 	socket.bind("tcp://*:5555");
 	stateMachineThread = std::thread{ &GameEngineCore::init, this };
