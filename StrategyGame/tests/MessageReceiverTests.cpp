@@ -13,7 +13,7 @@ using ::testing::_;
 class MessageReceiverTestsFixture : public testing::Test
 {
 protected:
-	MessageReceiverTestsFixture() : zmqContext{}, senderSocket{ zmqContext ,zmq::socket_type::req }, sut{ validAddress, zmq::socket_type::rep, mockPtr }
+	MessageReceiverTestsFixture() : zmqContext{}, senderSocket{ zmqContext ,zmq::socket_type::push }, sut{ validAddress, zmq::socket_type::pull, mockPtr }
 	{
 		senderSocket.connect(validAddress);
 	}
