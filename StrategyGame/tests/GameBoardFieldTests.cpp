@@ -24,3 +24,16 @@ TEST_F(GameBoardFieldTestsFixture, WillMoveExistingPiece)
 	ASSERT_TRUE(sut.hasPiece());
 	ASSERT_FALSE(otherField.hasPiece());
 }
+
+TEST_F(GameBoardFieldTestsFixture, WillMoveExistingPieceAndForth)
+{
+	GameBoardField otherField;
+	auto piecePtr = std::make_unique<GamePiece>();
+	otherField.movePieceHere(std::move(piecePtr));
+	otherField.moveOwnedPieceTo(sut);
+	ASSERT_TRUE(sut.hasPiece());
+	ASSERT_FALSE(otherField.hasPiece());
+	sut.moveOwnedPieceTo(otherField);
+	ASSERT_FALSE(sut.hasPiece());
+	ASSERT_TRUE(otherField.hasPiece());
+}
