@@ -5,6 +5,7 @@
 #include "InitBoardReq.pb.h"
 #include "CloseEngineCommand.pb.h"
 #include "ReqWrapper.pb.h"
+#include <cerrno>
 Init::Init(my_context context) : my_base{ context }
 {
 	synchronize();
@@ -20,10 +21,17 @@ void Init::synchronize()
 	LOG(INFO) << "Synchronizing to client";
 	zmq::message_t msg;
 	sendFromEngine(zmq::message_t{ "SYN" });
-	synchronizingSocket.recv(msg);
+	if (!synchronizingSocket.recv(msg))
+	{
+		LOG(ERROR) << "Error while synchronizing engine with peers";
+	}
 	if (!msg.empty())
 	{
-		synchronizingSocket.send(zmq::buffer(""));
+		if (synchronizingSocket.send(zmq::buffer("")) == -1)
+		{
+			LOG(ERROR) << "Got -1 while sending back syn message from engine:";
+			LOG(ERROR) << std::strerror(errno);
+		}
 	}
 }
 

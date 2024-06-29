@@ -20,7 +20,11 @@ boost::statechart::result InitializeBoard::react(const EventMessageArrival& even
 	initBoard.ParseFromString(eventMessageArrival.msg.to_string());
 	setup_board(initBoard);
 	zmq::message_t msg{};
-	outermost_context().sendBack(msg);
+	if (outermost_context().sendBack(msg) == -1)
+	{
+		LOG(ERROR) << "Got -1 while sending back reply from engine:";
+		LOG(ERROR) << std::strerror(errno);
+	}
 	LOG(INFO) << "Board setup. Terminating";
 	outermost_context().shutdown();
 	return terminate();
